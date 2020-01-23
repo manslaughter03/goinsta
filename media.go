@@ -1007,12 +1007,12 @@ func (insta *Instagram) postPhoto(photo io.Reader, photoCaption string, quality 
 	rndNumber := rand.Intn(9999999999-1000000000) + 1000000000
 	name := strconv.FormatInt(uploadID, 10) + "_0_" + strconv.Itoa(rndNumber)
 	buf := new(bytes.Buffer)
-	_, err := buf.ReadFrom(photo)
-	if err != nil {
-		return nil, err
-	}
+	buf.ReadFrom(photo)
 	bs := buf.Bytes()
-	req, err := http.NewRequest("POST", goInstaBaseUrl+"rupload_igphoto/"+name, buf)
+	req, err := http.NewRequest(
+		"POST",
+		goInstaBaseUrl+"rupload_igphoto/"+name,
+		buf)
 	if err != nil {
 		return nil, err
 	}
@@ -1020,6 +1020,7 @@ func (insta *Instagram) postPhoto(photo io.Reader, photoCaption string, quality 
 	req.Header.Set("X-IG-Connection-Type", "WIFI")
 	req.Header.Set("Cookie2", "$Version=1")
 	req.Header.Set("Accept-Language", "en-US")
+	req.Header.Set("Accept-Encoding", "gzip, deflate")
 	req.Header.Set("Content-type", "application/octet-stream")
 	req.Header.Set("Connection", "close")
 	req.Header.Set("User-Agent", goInstaUserAgent)
@@ -1037,6 +1038,7 @@ func (insta *Instagram) postPhoto(photo io.Reader, photoCaption string, quality 
 	}
 	req.Header.Set("X-Instagram-Rupload-Params", string(params))
 	req.Header.Set("Offset", "0")
+	req.Header.Set("Transfer-Encoding", "deflate")
 	req.Header.Set("X-Entity-Length", strconv.FormatInt(req.ContentLength, 10))
 
 	resp, err := insta.c.Do(req)
@@ -1071,7 +1073,7 @@ func (insta *Instagram) postPhoto(photo io.Reader, photoCaption string, quality 
 
 	config := map[string]interface{}{
 		"media_folder": "Instagram",
-		"source_type":  4,
+		"source_type":  "4",
 		"caption":      photoCaption,
 		"upload_id":    strconv.FormatInt(uploadID, 10),
 		"device_id":    insta.dID,
@@ -1094,6 +1096,7 @@ func (insta *Instagram) postPhoto(photo io.Reader, photoCaption string, quality 
 		"date_time_original":    now.Format("2020:51:21 22:51:37"),
 		"date_time_digitalized": now.Format("2020:51:21 22:51:37"),
 		"software":              "1",
+		"camera_make":           "OnePlus",
 	}
 	return config, nil
 }
