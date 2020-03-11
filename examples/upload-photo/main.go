@@ -20,7 +20,7 @@ func main() {
 	defer insta.Logout()
 
 	log.Println("Download random photo")
-	client := http.Client{}
+	var client http.Client
 	request, err := http.NewRequest("GET", "https://picsum.photos/800/800", nil)
 	if err != nil {
 		log.Fatal(err)
