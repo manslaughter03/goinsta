@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 
-	"github.com/TheForgotten69/goinsta/v2"
+	"github.com/manslaughter03/goinsta/v2"
 )
 
 // ImportFromBytes imports instagram configuration from an array of bytes.

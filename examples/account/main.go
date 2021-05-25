@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/TheForgotten69/goinsta/v2"
+	"github.com/manslaughter03/goinsta/v2"
 )
 
 var (
